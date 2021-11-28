@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
-
-// require('dotenv').config()
+const profiles = require('./routes/profiles')
+const connectDB = require('./db/connect');
+require('dotenv').config()
 // middleware
 app.use(express.json());
 
@@ -10,9 +11,19 @@ app.get('/', (req, res) => {
     res.send('Food Donation App!');
 })
 
-// app.use('/api/v1/tasks', tasks);
+app.use('/api/v1/profiles', profiles);
 
 const port = 3000
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-})
+
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGO_URI);
+        app.listen(port, () => {
+            console.log(`Server started at port ${port}`);
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+start();
