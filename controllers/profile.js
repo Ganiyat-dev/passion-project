@@ -7,14 +7,14 @@ const getAllProfiles = (req, res) => {
 const createProfile = async (req, res) => {
     try {
         const profile = await Profile.create(req.body)
-    res.status(201).json({profile})
-    } catch (err) {
-        res.status(400).json({message: err.message})
+        res.status(201).send({profile})
+    } catch (error) {
+        res.status(400).send({ message: error.message })
     }
 }
 
 const getProfile = (req, res) => {
-    res.send("get a single profile")
+    res.json({id: req.params.id})
 }
 
 module.exports = {
